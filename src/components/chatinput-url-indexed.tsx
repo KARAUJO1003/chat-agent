@@ -19,12 +19,14 @@ const indexedUrlSchema = z.object({
     .url({ message: "URL inválida" }),
 });
 type TIndexedUrl = z.infer<typeof indexedUrlSchema>;
-
-export const NavPages = () => {
+type SetMessages = ReturnType<typeof useChat>["setMessages"];
+export const ChatInoutIndexedUrls = ({
+  setMessages,
+}: {
+  setMessages: SetMessages;
+}) => {
   const router = useRouter();
   const pathname = usePathname();
-  const { setMessages } = useChat();
-  //verificar de possui alguma url valida após o /chat
 
   const getChatUrl = useMemo(() => {
     const url = pathname.split("/chat/")[1];
@@ -40,7 +42,7 @@ export const NavPages = () => {
 
   async function onSubmit(formData: TIndexedUrl) {
     router.push(`/chat/${formData.url}`);
-    toast.success("Redirecionando...");
+    toast.success("URL definida com sucesso!");
     setMessages([]);
   }
 
@@ -58,7 +60,7 @@ export const NavPages = () => {
         ease: "linear",
         repeat: Infinity,
       }}
-      className="border p-0.5 mx-auto rounded-full fixed left-1/2 -translate-x-1/2 top-4 max-w-2xl w-full text-white flex items-center justify-center"
+      className="border p-0.5 mx-auto z-30 w-[95%] sm:w-full rounded-full fixed left-1/2 -translate-x-1/2 top-4 max-w-2xl text-white flex items-center justify-center"
     >
       <Form {...form}>
         <motion.form

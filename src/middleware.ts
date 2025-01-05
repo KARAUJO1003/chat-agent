@@ -9,5 +9,12 @@ export function middleware(req: NextRequest) {
     res.cookies.set("sessionId", crypto.randomUUID());
   }
 
+  const pathActual = req.nextUrl.pathname;
+  const redirectUrl = "/chat/https://pt.wikipedia.org/wiki/Portal:Tecnologia";
+
+  if (pathActual === "/") {
+    return NextResponse.redirect(new URL(redirectUrl, req.nextUrl.origin));
+  }
+
   return res;
 }

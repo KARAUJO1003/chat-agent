@@ -4,12 +4,13 @@ import { Bot, MessageSquare } from "lucide-react";
 import { ScrollArea } from "./ui/scroll-area";
 interface MessagesProps {
   messages: TMessage[];
+  isLoading?: boolean;
 }
 
-export const Messages = ({ messages }: MessagesProps) => {
+export const Messages = ({ messages, isLoading }: MessagesProps) => {
   return (
-    <ScrollArea className="pr-4 snap-end">
-      <div className="flex gap-4 max-h-[calc(100vh-16rem)] flex-1 flex-col">
+    <ScrollArea className="px-4 snap-end py-6">
+      <div className="flex gap-4 h-full flex-1 flex-col">
         {messages.length ? (
           messages.map((message, i) => (
             <Message
@@ -27,6 +28,11 @@ export const Messages = ({ messages }: MessagesProps) => {
             <p className="text-zinc-500 text-sm">
               Ask your first question to get started.
             </p>
+          </div>
+        )}
+        {isLoading && (
+          <div className="flex-1 flex items-center justify-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
           </div>
         )}
       </div>

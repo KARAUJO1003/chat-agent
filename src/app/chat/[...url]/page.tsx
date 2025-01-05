@@ -3,11 +3,8 @@ import { ragChat } from "@/lib/rag-chat";
 import { redis } from "@/lib/redis";
 import { cookies } from "next/headers";
 
-interface PageProps {
-  params: {
-    url: string | string[] | undefined;
-  };
-}
+type Params = Promise<{ url: string | string[] | undefined }>;
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
 async function reconstructeUrl({ url }: { url: string[] }) {
   const decodedComponents = url.map((component) =>
@@ -16,7 +13,14 @@ async function reconstructeUrl({ url }: { url: string[] }) {
   return decodedComponents.join("/");
 }
 
-export default async function Page({ params: { url } }: PageProps) {
+export default async function Page({
+  params,
+}: {
+  params: Params;
+  searchParams: SearchParams;
+}) {
+  const { url } = await params;
+
   const sessionCookie = (await cookies()).get("sessionId")?.value;
   const reconstructedUrl = await reconstructeUrl({
     url: url as string[],
